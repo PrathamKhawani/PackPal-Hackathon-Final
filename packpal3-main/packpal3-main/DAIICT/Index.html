@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PackPal - Group Logistics Organizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .login-container {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen active">
+            <div class="background-container">
+                <div class="login-container">
+                    <div class="logo">
+                        <i class="fas fa-suitcase-rolling"></i>
+                        <h1>PackPal</h1>
+                        <p>Group Logistics Organizer</p>
+                    </div>
+                    <div class="login-form">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" placeholder="Enter your username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Login as:</label>
+                            <select id="role">
+                                <option value="owner">Owner</option>
+                                <option value="admin">Admin</option>
+                                <option value="member">Member</option>
+                                <option value="viewer">Viewer</option>
+                            </select>
+                        </div>
+                        <button id="login-btn" class="btn-primary">Login</button>
+                        <div class="demo-notes">
+                            <p>Demo accounts:</p>
+                            <ul>
+                                <li>Username: owner / Password: owner123</li>
+                                <li>Username: admin / Password: admin123</li>
+                                <li>Username: member / Password: member123</li>
+                                <li>Username: viewer / Password: viewer123</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Application Screen -->
+        <div id="main-screen" class="screen">
+            <header>
+                <div class="header-left">
+                    <button id="menu-toggle" class="btn-icon">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="group-name">My Group</h1>
+                </div>
+                <div class="header-right">
+                    <span id="current-role" class="role-badge">Owner</span>
+                    <button id="dark-mode-toggle" class="btn-icon">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="logout-btn" class="btn-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <aside id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Menu</h3>
+                </div>
+                <nav>
+                    <ul>
+                        <li class="active" data-section="dashboard">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </li>
+                        <li data-section="checklists">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Checklists</span>
+                        </li>
+                        <li data-section="members">
+                            <i class="fas fa-users"></i>
+                            <span>Members</span>
+                        </li>
+                        <li data-section="templates">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Templates</span>
+                        </li>
+                        <li data-section="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="sidebar-footer">
+                    <button id="new-group-btn" class="btn-secondary">
+                        <i class="fas fa-plus"></i>
+                        <span>New Group</span>
+                    </button>
+                </div>
+            </aside>
+
+            <div class="main-content">
+                <!-- Sidebar -->
+                <aside id="sidebar">
+                    <div class="sidebar-header">
+                        <h3>Menu</h3>
+                    </div>
+                    <nav>
+                        <ul>
+                            <li class="active" data-section="dashboard">
+                                <i class="fas fa-home"></i>
+                                <span>Dashboard</span>
+                            </li>
+                            <li data-section="checklists">
+                                <i class="fas fa-clipboard-list"></i>
+                                <span>Checklists</span>
+                            </li>
+                            <li data-section="members">
+                                <i class="fas fa-users"></i>
+                                <span>Members</span>
+                            </li>
+                            <li data-section="templates">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </li>
+                            <li data-section="settings">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="sidebar-footer">
+                        <button class="btn-secondary">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- Content Area -->
+                <div class="content-area">
+                    <!-- Dashboard Section -->
+                    <section id="dashboard-section" class="content-section active">
+                        <h2>Group Overview</h2>
+                        <div class="stats-container">
+                            <div class="stat-card">
+                                <h3>Total Items</h3>
+                                <p id="total-items">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Packed</h3>
+                                <p id="packed-items">0 <span class="percentage">(0%)</span></p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Delivered</h3>
+                                <p id="delivered-items">0 <span class="percentage">(0%)</span></p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Members</h3>
+                                <p id="total-members">0</p>
+                            </div>
+                        </div>
+
+                        <div class="progress-chart">
+                            <h3>Packing Progress</h3>
+                            <div class="chart-bar">
+                                <div class="progress-bar">
+                                    <div class="progress packed" style="width: 30%;"></div>
+                                    <div class="progress delivered" style="width: 15%;"></div>
+                                </div>
+                                <div class="chart-legend">
+                                    <span><i class="fas fa-square packed"></i> Packed (30%)</span>
+                                    <span><i class="fas fa-square delivered"></i> Delivered (15%)</span>
+                                    <span><i class="fas fa-square unpacked"></i> Unpacked (55%)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recent-activity">
+                            <h3>Recent Activity</h3>
+                            <ul id="activity-feed">
+                                <li>
+                                    <i class="fas fa-user-circle"></i>
+                                    <span class="activity-text">John marked "Tent" as packed</span>
+                                    <span class="activity-time">2 mins ago</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-user-circle"></i>
+                                    <span class="activity-text">Sarah assigned "First Aid Kit" to you</span>
+                                    <span class="activity-time">15 mins ago</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-user-circle"></i>
+                                    <span class="activity-text">Mike added "Beach Chairs" to the list</span>
+                                    <span class="activity-time">1 hour ago</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Checklists Section -->
+                    <section id="checklists-section" class="content-section">
+                        <div class="section-header">
+                            <h2>Checklists</h2>
+                            <div class="section-actions">
+                                <button id="add-category-btn" class="btn-primary">
+                                    <i class="fas fa-plus"></i> Add Category
+                                </button>
+                                <button id="add-item-btn" class="btn-primary">
+                                    <i class="fas fa-plus"></i> Add Item
+                                </button>
+                                <button id="export-list-btn" class="btn-secondary">
+                                    <i class="fas fa-file-export"></i> Export
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="category-tabs">
+                            <div class="tabs-container">
+                                <button class="tab active" data-category="all">All Items</button>
+                                <button class="tab" data-category="clothing">Clothing</button>
+                                <button class="tab" data-category="hygiene">Hygiene</button>
+                                <button class="tab" data-category="tech">Tech Gear</button>
+                                <button class="tab" data-category="food">Food & Snacks</button>
+                            </div>
+                        </div>
+
+                        <div class="checklist-container">
+                            <div class="checklist-header">
+                                <div class="header-item">Item</div>
+                                <div class="header-assigned">Assigned To</div>
+                                <div class="header-status">Status</div>
+                                <div class="header-actions">Actions</div>
+                            </div>
+                            <div class="checklist-items" id="checklist-items">
+                                <!-- Items will be populated here -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Members Section -->
+                    <section id="members-section" class="content-section">
+                        <div class="section-header">
+                            <h2>Group Members</h2>
+                            <div class="section-actions">
+                                <button id="add-member-btn" class="btn-primary">
+                                    <i class="fas fa-user-plus"></i> Add Member
+                                </button>
+                                <button id="manage-roles-btn" class="btn-secondary">
+                                    <i class="fas fa-user-shield"></i> Manage Roles
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="members-list">
+                            <div class="member-card">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="member-info">
+                                    <h3>You (Owner)</h3>
+                                    <p>owner@example.com</p>
+                                </div>
+                                <div class="member-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Items Assigned</span>
+                                        <span class="stat-value">5</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Packed</span>
+                                        <span class="stat-value">3</span>
+                                    </div>
+                                </div>
+                                <div class="member-actions">
+                                    <button class="btn-icon" disabled>
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="member-card">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="member-info">
+                                    <h3>Sarah (Admin)</h3>
+                                    <p>sarah@example.com</p>
+                                </div>
+                                <div class="member-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Items Assigned</span>
+                                        <span class="stat-value">7</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Packed</span>
+                                        <span class="stat-value">2</span>
+                                    </div>
+                                </div>
+                                <div class="member-actions">
+                                    <button class="btn-icon">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="member-card">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="member-info">
+                                    <h3>Mike (Member)</h3>
+                                    <p>mike@example.com</p>
+                                </div>
+                                <div class="member-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Items Assigned</span>
+                                        <span class="stat-value">4</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Packed</span>
+                                        <span class="stat-value">1</span>
+                                    </div>
+                                </div>
+                                <div class="member-actions">
+                                    <button class="btn-icon">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="member-card">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="member-info">
+                                    <h3>Emma (Viewer)</h3>
+                                    <p>emma@example.com</p>
+                                </div>
+                                <div class="member-stats">
+                                    <div class="stat">
+                                        <span class="stat-label">Items Assigned</span>
+                                        <span class="stat-value">0</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-label">Packed</span>
+                                        <span class="stat-value">0</span>
+                                    </div>
+                                </div>
+                                <div class="member-actions">
+                                    <button class="btn-icon">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Templates Section -->
+                    <section id="templates-section" class="content-section">
+                        <div class="section-header">
+                            <h2>Templates</h2>
+                            <div class="section-actions">
+                                <button id="create-template-btn" class="btn-primary">
+                                    <i class="fas fa-plus"></i> Create Template
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="templates-grid">
+                            <div class="template-card">
+                                <div class="template-image beach-trip"></div>
+                                <div class="template-info">
+                                    <h3>Beach Trip</h3>
+                                    <p>Perfect for a weekend getaway by the ocean</p>
+                                    <div class="template-stats">
+                                        <span><i class="fas fa-list"></i> 25 items</span>
+                                        <span><i class="fas fa-users"></i> 4-6 people</span>
+                                    </div>
+                                    <button class="btn-secondary">Use Template</button>
+                                </div>
+                            </div>
+
+                            <div class="template-card">
+                                <div class="template-image camping"></div>
+                                <div class="template-info">
+                                    <h3>Camping</h3>
+                                    <p>Everything you need for an outdoor adventure</p>
+                                    <div class="template-stats">
+                                        <span><i class="fas fa-list"></i> 35 items</span>
+                                        <span><i class="fas fa-users"></i> 2-8 people</span>
+                                    </div>
+                                    <button class="btn-secondary">Use Template</button>
+                                </div>
+                            </div>
+
+                            <div class="template-card">
+                                <div class="template-image business-trip"></div>
+                                <div class="template-info">
+                                    <h3>Business Trip</h3>
+                                    <p>Professional essentials for work travel Business-Trips</p>
+                                    <div class="template-stats">
+                                        <span><i class="fas fa-list"></i> 18 items</span>
+                                        <span><i class="fas fa-users"></i> 1 person</span>
+                                    </div>
+                                    <button class="btn-secondary">Use Template</button>
+                                </div>
+                            </div>
+
+                            <div class="template-card">
+                                <div class="template-image festival"></div>
+                                <div class="template-info">
+                                    <h3>Festival Weekend</h3>
+                                    <p>Music festival essentials for a fun weekend</p>
+                                    <div class="template-stats">
+                                        <span><i class="fas fa-list"></i> 22 items</span>
+                                        <span><i class="fas fa-users"></i> 2-4 people</span>
+                                    </div>
+                                    <button class="btn-secondary">Use Template</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Settings Section -->
+                    <section id="settings-section" class="content-section">
+                        <h2>Group Settings</h2>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label for="group-name-input">Group Name</label>
+                                <input type="text" id="group-name-input" value="My Group">
+                            </div>
+                            <div class="form-group">
+                                <label for="group-description">Description</label>
+                                <textarea id="group-description" rows="3">Our awesome group for organizing trips and events</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="group-event-date">Event Date</label>
+                                <input type="date" id="group-event-date">
+                            </div>
+                            <div class="form-group">
+                                <label>Notification Settings</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="email-notifications" checked>
+                                        <label for="email-notifications">Email notifications</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="in-app-notifications" checked>
+                                        <label for="in-app-notifications">In-app notifications</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="sms-notifications">
+                                        <label for="sms-notifications">SMS notifications</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-primary">Save Changes</button>
+                                <button class="btn-danger">Delete Group</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div id="add-item-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Item</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="item-name">Item Name</label>
+                        <input type="text" id="item-name" placeholder="e.g., Toothbrush, Tent, Charger">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-category">Category</label>
+                        <select id="item-category">
+                            <option value="clothing">Clothing</option>
+                            <option value="hygiene">Hygiene</option>
+                            <option value="tech">Tech Gear</option>
+                            <option value="food">Food & Snacks</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-assigned">Assign To</label>
+                        <select id="item-assigned">
+                            <option value="me">Me</option>
+                            <option value="sarah">Sarah</option>
+                            <option value="mike">Mike</option>
+                            <option value="emma">Emma</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-quantity">Quantity</label>
+                        <input type="number" id="item-quantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-notes">Notes (Optional)</label>
+                        <textarea id="item-notes" rows="2" placeholder="Any special instructions..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Cancel</button>
+                    <button class="btn-primary" id="save-item-btn">Add Item</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-category-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Category</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="category-name">Category Name</label>
+                        <input type="text" id="category-name" placeholder="e.g., Beach Gear, Cooking Supplies">
+                    </div>
+                    <div class="form-group">
+                        <label for="category-icon">Icon</label>
+                        <div class="icon-selector">
+                            <button class="icon-option active" data-icon="tshirt"><i class="fas fa-tshirt"></i></button>
+                            <button class="icon-option" data-icon="tooth"><i class="fas fa-tooth"></i></button>
+                            <button class="icon-option" data-icon="laptop"><i class="fas fa-laptop"></i></button>
+                            <button class="icon-option" data-icon="utensils"><i class="fas fa-utensils"></i></button>
+                            <button class="icon-option" data-icon="umbrella-beach"><i class="fas fa-umbrella-beach"></i></button>
+                            <button class="icon-option" data-icon="first-aid"><i class="fas fa-first-aid"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Cancel</button>
+                    <button class="btn-primary" id="save-category-btn">Add Category</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-member-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Member</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="member-name">Name</label>
+                        <input type="text" id="member-name" placeholder="Member's full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="member-email">Email</label>
+                        <input type="email" id="member-email" placeholder="member@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="member-role">Role</label>
+                        <select id="member-role">
+                            <option value="admin">Admin</option>
+                            <option value="member" selected>Member</option>
+                            <option value="viewer">Viewer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="member-message">Personal Message (Optional)</label>
+                        <textarea id="member-message" rows="3" placeholder="Let them know what this group is about..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Cancel</button>
+                    <button class="btn-primary" id="invite-member-btn">Add Member</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="export-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Export Checklist</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="export-format">Format</label>
+                        <select id="export-format">
+                            <option value="pdf">PDF Document</option>
+                            <option value="csv">CSV Spreadsheet</option>
+                            <option value="print">Printer Friendly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="export-content">Include</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="include-item-names" checked>
+                                <label for="include-item-names">Item names</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="include-assigned-members" checked>
+                                <label for="include-assigned-members">Assigned members</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="include-packing-status" checked>
+                                <label for="include-packing-status">Packing status</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="include-notes">
+                                <label for="include-notes">Notes</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="include-group-name-date" checked>
+                                <label for="include-group-name-date">Group name and date</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="export-layout">Layout</label>
+                        <select id="export-layout">
+                            <option value="simple">Simple List</option>
+                            <option value="categorized">By Categories</option>
+                            <option value="members">By Members</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Cancel</button>
+                    <button class="btn-primary" id="generate-export-btn">Generate Export</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add the edit modal before the closing app div -->
+        <div id="edit-item-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Edit Item</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit-item-name">Item Name</label>
+                        <input type="text" id="edit-item-name" placeholder="e.g., Toothbrush, Tent, Charger">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-item-category">Category</label>
+                        <select id="edit-item-category">
+                            <option value="clothing">Clothing</option>
+                            <option value="hygiene">Hygiene</option>
+                            <option value="tech">Tech Gear</option>
+                            <option value="food">Food & Snacks</option>
+                            <option value="camping">Camping</option>
+                            <option value="beach">Beach Gear</option>
+                            <option value="essentials">Essentials</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-item-assigned">Assign To</label>
+                        <select id="edit-item-assigned">
+                            <option value="me">Me</option>
+                            <option value="sarah">Sarah</option>
+                            <option value="mike">Mike</option>
+                            <option value="emma">Emma</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-item-status">Status</label>
+                        <select id="edit-item-status">
+                            <option value="unpacked">Unpacked</option>
+                            <option value="packed">Packed</option>
+                            <option value="delivered">Delivered</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-item-quantity">Quantity</label>
+                        <input type="number" id="edit-item-quantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-item-notes">Notes (Optional)</label>
+                        <textarea id="edit-item-notes" rows="2" placeholder="Any special instructions..."></textarea>
+                    </div>
+                    <input type="hidden" id="edit-item-id">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Cancel</button>
+                    <button class="btn-primary" id="save-edit-btn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="notification-toast" class="toast">
+            <div class="toast-content">
+                <i class="fas fa-check-circle"></i>
+                <span class="toast-message">Item added successfully!</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
