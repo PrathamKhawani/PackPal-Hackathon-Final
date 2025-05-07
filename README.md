@@ -49,8 +49,11 @@ Developed by a team of passionate learners during **TIC-TECH-TOE'25** at DAIICT 
 '''
 
 -├── index.html
+
 -├── script.js
+
 -├── styles.css
+
 -└── README.md
 
 ---
