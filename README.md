@@ -48,10 +48,10 @@ Developed by a team of passionate learners during **TIC-TECH-TOE'25** at DAIICT 
 
 '''
 
-├── index.html
-├── styles.css
-├── script.js
-└── README.md
+-├── index.html
+-├── styles.css
+-├── script.js
+-└── README.md
 
 ---
 
